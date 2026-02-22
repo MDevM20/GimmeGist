@@ -1,0 +1,37 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch: # This allows manual triggering of the workflow
+
+jobs:
+  build:
+    name: Build & Publish APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu' # A popular distribution for Flutter/Android builds
+          java-version: '17'   # Standard for modern Android builds
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gimme-gist-release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 7
