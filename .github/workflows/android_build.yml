@@ -2,6 +2,11 @@ name: Build Android APK
 
 on:
   workflow_dispatch: # This allows manual triggering of the workflow
+    inputs:
+      version:
+        description: 'Release Version (e.g., 1.0.0)'
+        required: true
+        default: '1.0.0'
 
 jobs:
   build:
@@ -39,8 +44,8 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.0.${{ github.run_number }}
-          name: GimmeGist v1.0.${{ github.run_number }}
+          tag_name: v${{ github.event.inputs.version }}
+          name: GimmeGist v${{ github.event.inputs.version }}
           files: build/app/outputs/flutter-apk/app-release.apk
           draft: false
           prerelease: false
