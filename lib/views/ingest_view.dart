@@ -65,7 +65,7 @@ class _IngestViewState extends State<IngestView> {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) {
-        if (!didPop) context.go('/visit/${widget.appointmentId}');
+        if (!didPop) context.pop();
       },
       child: Scaffold(
       backgroundColor: Colors.transparent,
@@ -78,7 +78,7 @@ class _IngestViewState extends State<IngestView> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go('/visit/${widget.appointmentId}'),
+          onPressed: () => context.pop(),
         ),
         actions: [
           ListenableBuilder(
@@ -404,7 +404,7 @@ class _IngestViewState extends State<IngestView> {
                           onPressed: () async {
                             await _saveProgress();
                             if (context.mounted) {
-                              context.go('/visit/${widget.appointmentId}');
+                              context.pop();
                             }
                           },
                           style: ElevatedButton.styleFrom(

@@ -61,6 +61,13 @@ class _VisitDetailViewState extends State<VisitDetailView> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/'),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            tooltip: 'Refresh',
+            onPressed: () => _loadAppointment(),
+          ),
+        ],
       ),
       body: SafeArea(
         child: ListenableBuilder(
@@ -92,9 +99,10 @@ class _VisitDetailViewState extends State<VisitDetailView> {
                     subtitle: 'Sync wearables & upload reports',
                     isDone: appointment.dataIngested,
                     isAvailable: true,
-                    onTap: () => context.go(
-                      '/visit/${widget.appointmentId}/ingest',
-                    ),
+                    onTap: () async {
+                      await context.push('/visit/${widget.appointmentId}/ingest');
+                      _loadAppointment();
+                    },
                   ),
                   _buildStepConnector(context, appointment.dataIngested),
                   _buildStepCard(
@@ -106,9 +114,10 @@ class _VisitDetailViewState extends State<VisitDetailView> {
                     isDone: appointment.gistGenerated,
                     isAvailable: appointment.dataIngested,
                     onTap: appointment.dataIngested
-                        ? () => context.go(
-                              '/visit/${widget.appointmentId}/synthesize',
-                            )
+                        ? () async {
+                            await context.push('/visit/${widget.appointmentId}/synthesize');
+                            _loadAppointment();
+                          }
                         : null,
                   ),
                   _buildStepConnector(context, appointment.gistGenerated),
@@ -121,9 +130,10 @@ class _VisitDetailViewState extends State<VisitDetailView> {
                     isDone: appointment.agendaPrepared,
                     isAvailable: appointment.gistGenerated,
                     onTap: appointment.gistGenerated
-                        ? () => context.go(
-                              '/visit/${widget.appointmentId}/prepare',
-                            )
+                        ? () async {
+                            await context.push('/visit/${widget.appointmentId}/prepare');
+                            _loadAppointment();
+                          }
                         : null,
                   ),
                   _buildStepConnector(context, appointment.agendaPrepared),
@@ -135,9 +145,10 @@ class _VisitDetailViewState extends State<VisitDetailView> {
                     subtitle: 'Record audio & generate summary',
                     isDone: appointment.status == AppointmentStatus.completed,
                     isAvailable: true,
-                    onTap: () => context.go(
-                      '/visit/${widget.appointmentId}/recap',
-                    ),
+                    onTap: () async {
+                      await context.push('/visit/${widget.appointmentId}/recap');
+                      _loadAppointment();
+                    },
                   ),
                 ],
               ),

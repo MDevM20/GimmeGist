@@ -50,7 +50,7 @@ class _PrepareViewState extends State<PrepareView> {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) {
-        if (!didPop) context.go('/visit/${widget.appointmentId}');
+        if (!didPop) context.pop();
       },
       child: Scaffold(
       backgroundColor: Colors.transparent,
@@ -63,7 +63,7 @@ class _PrepareViewState extends State<PrepareView> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go('/visit/${widget.appointmentId}'),
+          onPressed: () => context.pop(),
         ),
       ),
       body: SafeArea(
@@ -112,7 +112,7 @@ class _PrepareViewState extends State<PrepareView> {
                     onPressed: () async {
                       await _saveProgress();
                       if (context.mounted) {
-                        context.go('/visit/${widget.appointmentId}');
+                        context.pop();
                       }
                     },
                     style: ElevatedButton.styleFrom(

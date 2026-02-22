@@ -65,7 +65,7 @@ class _RecapViewState extends State<RecapView> {
             if (_viewModel.isRecording) {
               _showStopRecordingDialog(context);
             } else {
-              context.go('/visit/${widget.appointmentId}');
+              context.pop();
             }
           },
           child: _buildContent(context),
@@ -92,7 +92,7 @@ class _RecapViewState extends State<RecapView> {
           TextButton(
             onPressed: () {
               Navigator.of(ctx).pop();
-              context.go('/visit/${widget.appointmentId}');
+              context.pop();
             },
             style: TextButton.styleFrom(foregroundColor: Colors.red),
             child: const Text('Discard & Leave'),
@@ -117,7 +117,7 @@ class _RecapViewState extends State<RecapView> {
           backgroundColor: Colors.transparent,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () => context.go('/'),
+            onPressed: () => context.pop(),
           ),
         ),
         body: const Center(child: Text('Visit not found.')),
@@ -348,9 +348,7 @@ class _RecapViewState extends State<RecapView> {
                     if (!_viewModel.isRecording) ...[
                       const SizedBox(height: 12),
                       OutlinedButton(
-                        onPressed: () => context.go(
-                          '/visit/${widget.appointmentId}',
-                        ),
+                        onPressed: () => context.pop(),
                         style: OutlinedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),
                         ),
@@ -457,7 +455,7 @@ class _RecapViewState extends State<RecapView> {
       await _repository.save(updated);
     }
     if (mounted) {
-      context.go('/visit/${widget.appointmentId}');
+      context.pop();
     }
   }
 
