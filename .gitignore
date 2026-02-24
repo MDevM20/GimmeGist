@@ -43,3 +43,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+ai_models/clinical_translation/.secrets.env
+ai_models/question_generation/.secrets.env
+ai_models/secondary_oversight/.secrets.env
+.agents/rules/ai-models-python.md
+.agents/rules/flutter.md

@@ -1,0 +1,26 @@
+[project]
+name = "secondary-oversight"
+version = "0.1.0"
+description = "LangGraph MLflow model using MedGemma 27B (multimodal) for secondary diagnostic oversight — identifies missed radiology findings and generates gentle patient questions"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "langgraph>=0.2.0",
+    "langchain-google-genai>=2.0.0",
+    "langchain-core>=0.3.0",
+    "mlflow>=2.17.0",
+    "deepeval>=2.0.0",
+    "textstat>=0.7.0",
+    "datasets>=3.0.0",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.0.0",
+    "pillow>=10.0.0",
+    "pandas>=2.0.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
