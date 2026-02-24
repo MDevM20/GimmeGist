@@ -19,6 +19,34 @@ Built on the HAI-DEF MedGemma models, the platform identifies physiological anom
 3. **Prepare**: A Strategic Consultation Agenda is generated, featuring high-yield questions prioritized for a standard 15-minute visit. AI Insights surface gentle exploratory questions based on secondary diagnostic safety nets.
 4. **Recap**: Post-visit, the app processes authorized consultation audio to provide a plain-language summary of the doctor's instructions, action items, and follow-ups.
 
+## AI Models (`ai_models/`)
+
+GimmeGist's intelligence layer is powered by three **LangGraph + MedGemma 27B** models, each logged and tracked via **MLflow**. All models follow a shared pipeline pattern: `ingest → split → features → model → evaluate`, orchestrated by `run_pipeline.py`.
+
+### 1. [Clinical Translation](ai_models/clinical_translation/README.md)
+
+Translates complex clinical and specialty medical reports into accessible, patient-friendly summaries. A 3-node LangGraph (`extract_cause → extract_location → extract_treatment`) decomposes clinical text into three plain-language dimensions: *what* is happening, *where* in the body, and *how* it's typically treated.
+
+- **Foundation Model:** MedGemma 27B (text-only)
+- **Evaluation:** DeepEval faithfulness scoring + readability metrics (Flesch RE ≥ 60, FK Grade ≤ 8)
+- **Dataset:** MedLane — 12,801+ clinical ↔ simplified sentence pairs
+
+### 2. [Question Generation](ai_models/question_generation/README.md)
+
+Generates strategic patient questions from medical reports, health data, and symptoms to maximize the value of a 15-minute consultation. A 3-node LangGraph (`generate_understanding → generate_treatment → generate_lifestyle`) produces prioritized questions across three categories.
+
+- **Foundation Model:** MedGemma 27B (text-only)
+- **Evaluation:** DeepEval faithfulness scoring (combined + per-category)
+- **Dataset:** MedQuAD — 47,000+ medical Q&A pairs from 12 NIH websites
+
+### 3. [Secondary Oversight](ai_models/secondary_oversight/README.md)
+
+Acts as a secondary diagnostic safety net by parsing radiology images alongside diagnostic text to identify potential unaddressed findings. Instead of surfacing raw clinical flags, the model generates **gentle, exploratory patient questions** to add to the consultation agenda.
+
+- **Foundation Model:** MedGemma 27B (**multimodal** — images + text)
+- **Evaluation:** Finding capture rate (DeepEval GEval ≥ 0.6) + tone quality (non-alarmist scoring, readability)
+- **Dataset:** ReXErr-v1 (26K+ chest X-ray reports with injected errors) + built-in synthetic demo set
+
 ## Architecture & Tech Stack
 
 - **Framework**: Flutter (targeting Android primarily, requires `minSdkVersion 26`).
